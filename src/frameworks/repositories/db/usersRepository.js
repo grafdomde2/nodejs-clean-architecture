@@ -28,7 +28,7 @@ module.exports = {
     delete: async user => {
         const index = db.users.findIndex( item => item.id === user.id );
         if(index >= 0){
-            db.users.splice(index, 0);
+            db.users.splice(index, 1);
             return user;
         }
 
