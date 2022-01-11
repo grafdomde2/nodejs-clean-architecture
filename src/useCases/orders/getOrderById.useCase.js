@@ -1,10 +1,10 @@
 module.exports = dependencies => {
-    const {
-        ordersRepository
+    const { 
+        ordersRepository 
     } = dependencies;
 
     if(!ordersRepository){
-        throw new Error('ordersRepository should be exists in denpendencies')
+        throw new Error('ordersRepository should be in dependencies');
     }
 
     const execute = ({
@@ -12,5 +12,9 @@ module.exports = dependencies => {
     }) => {
         return ordersRepository.getById(id);
     }
-    return execute;
+
+    return {
+        execute
+    };
+
 }
