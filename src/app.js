@@ -10,6 +10,8 @@ const API_PREFIX = process.env.API_PREFIX || '/api/v1';
 
 const dependencies = require('./config/dependencies');
 
+const ErrorHandler = require('./frameworks/expressSpecific/ErrorHandler')
+
 //Export some object
 module.exports = {
     //Start function which starts our server
@@ -20,12 +22,12 @@ module.exports = {
             extended: true
         }))
 
-        // Routes
-        // TODO: dd dependencies to the file
+        // Routes :: add dependencies to the file
         app.use(API_PREFIX, routes(dependencies))
 
         // Common Error handler
-
+        app.use(ErrorHandler);
+        
         app.listen(PORT, () => {
             console.log(`Our server is running under port ${PORT}`);
         })

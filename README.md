@@ -1,17 +1,17 @@
-# nodejs-clean-architecture
+# Nodejs Clean Architecture
 
 # In-Progress
 
 Some testing APIs.
 Try these APIs using Postman
 
-# Add User:
+## Add User:
 
 Type: POST
 API: http://localhost:3000/api/v1/users
 Body >> raw > JSON
 
-# JSON format
+## JSON format
 
 <pre>
 {
@@ -26,12 +26,12 @@ Body >> raw > JSON
 }
 </pre>
 
-# Get User By ID
+## Get User By ID
 
 Type: GET
 API: http://localhost:3000/api/v1/users/{copy user id from the above API result and past it here}
 
-# Update User
+## Update User
 
 Type: PUT
 API: http://localhost:3000/api/v1/users
@@ -53,7 +53,7 @@ JSON Format
 }
 </pre>
 
-# Delete User By Id
+## Delete User By Id
 
 Type: DELETE
 API: http://localhost:3000/api/v1/users
@@ -67,13 +67,13 @@ JSON Format
 }
 </pre>
 
-# Add Products
+## Add Products
 
 Type: POST
 API: http://localhost:3000/api/v1/products
 Body >> raw > JSON
 
-# JSON format
+## JSON format
 
 <pre>
 {
@@ -90,12 +90,12 @@ Body >> raw > JSON
 }
 </pre>
 
-# Get Product By ID
+## Get Product By ID
 
 Type: GET
 API: http://localhost:3000/api/v1/products/{copy user id from the above API result and past it here}
 
-# Update Product
+## Update Product
 
 Type: PUT
 API: http://localhost:3000/api/v1/products
@@ -119,7 +119,7 @@ JSON Format
 }
 </pre>
 
-# Delete Product By Id
+## Delete Product By Id
 
 Type: DELETE
 API: http://localhost:3000/api/v1/products
@@ -133,13 +133,13 @@ JSON Format
 }
 </pre>
 
-# Place an Order
+## Place an Order
 
 Type: POST
 API: http://localhost:3000/api/v1/orders
 Body >> raw > JSON
 
-# JSON format
+## JSON format
 
 <pre>
 {
@@ -156,12 +156,12 @@ Body >> raw > JSON
 }
 </pre>
 
-# Get Order By ID
+## Get Order By ID
 
 Type: GET
 API: http://localhost:3000/api/v1/orders/{copy user id from the above API result and past it here}
 
-# Update Order
+## Update Order
 
 Type: PUT
 API: http://localhost:3000/api/v1/orders
