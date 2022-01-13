@@ -11,8 +11,8 @@ const {
     order: {
         addOrderUseCase,
         getOrderByIdUseCase,
-        updateOrderByIdUseCase,
-        deleteOrderByIdUseCase
+        updateOrderUseCase,
+        deleteOrderUseCase
     }
 } = require('../../../src/useCases');
 
@@ -107,7 +107,7 @@ describe('Order use cases', () => {
             }
 
             // call update
-            const updatedOrder = await updateOrderByIdUseCase(dependencies).execute({ 
+            const updatedOrder = await updateOrderUseCase(dependencies).execute({ 
                 order: cloneDeep(mockOrder) 
             })
 
@@ -129,7 +129,7 @@ describe('Order use cases', () => {
             }
 
             // call delete
-            const deletedOrder = await deleteOrderByIdUseCase(dependencies).execute({
+            const deletedOrder = await deleteOrderUseCase(dependencies).execute({
                 order: cloneDeep(mockOrder)
             })
 
