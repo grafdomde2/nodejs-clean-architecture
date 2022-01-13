@@ -185,7 +185,7 @@ JSON Format
 }
 </pre>
 
-# Delete Order By Id
+## Delete Order By Id
 
 Type: DELETE
 API: http://localhost:3000/api/v1/orders
