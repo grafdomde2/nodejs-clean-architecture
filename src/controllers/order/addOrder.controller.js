@@ -22,15 +22,9 @@ module.exports = dependencies => {
                 isPayed,
                 meta
             } = body;
-
-            throw { 
-                status: 404, 
-                msg: 'just a test', 
-                reason: 'because we are playing with the things' 
-            }
             
             const addOrder = addOrderUseCase(dependencies);
-            const response = await addOrder.execute({
+            const response = addOrder.execute({
                 userId,
                 productsIds,
                 date,

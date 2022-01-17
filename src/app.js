@@ -10,7 +10,7 @@ const API_PREFIX = process.env.API_PREFIX || '/api/v1';
 
 const dependencies = require('./config/dependencies');
 
-const ErrorHandler = require('./frameworks/expressSpecific/ErrorHandler')
+const ErrorHandler = require('./frameworks/expressSpecific/ErrorHandler');
 
 //Export some object
 module.exports = {

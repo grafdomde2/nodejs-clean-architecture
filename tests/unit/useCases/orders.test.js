@@ -4,28 +4,47 @@ const {
 
 const Chance = require('chance');
 const chance = new Chance();
+
+const {
+    constants: {
+        userConstants: {
+            genders
+        }
+    }
+} = require('../../../src/entities');
+
 const {
     cloneDeep
 } = require('lodash');
+
+const {
+    usersRepository,
+    productsRepository   
+} = require('../../../src/frameworks/repositories/db');
+
 const {
     order: {
         addOrderUseCase,
         getOrderByIdUseCase,
         updateOrderUseCase,
         deleteOrderUseCase
+    },
+    user: {
+        getUserByIdUseCase,
+        addUserUseCase
+    },
+    product: {
+        getProductByIdUseCase,
+        addProductUseCase
     }
 } = require('../../../src/useCases');
 
+const { 
+    ValidationError 
+} = require('../../../src/frameworks/common');
+
 describe('Order use cases', () => {
-    const testOrder = {
-        userId: uuidv4(),
-        productsIds: [uuidv4(), uuidv4()],
-        date: chance.date(),
-        isPayed: false,
-        meta: {
-            comment: 'Please delie it to me as soon as possible.'
-        }
-    }
+    let testOrder;
 
     const mockOrdersRepo = {
         add: jest.fn(async order => ({ 
@@ -46,8 +65,57 @@ describe('Order use cases', () => {
         delete: jest.fn(async order => order)
     }
     const dependencies = {
-        ordersRepository: mockOrdersRepo
+        ordersRepository: mockOrdersRepo,
+        usersRepository,
+        productsRepository,
+        useCases: {
+            user: {
+                getUserByIdUseCase: jest.fn(dependencies => getUserByIdUseCase(dependencies))
+            },
+            product: {
+                getProductByIdUseCase: jest.fn(dependencies => getProductByIdUseCase(dependencies))
+            }
+        }
     }
+
+    const mocks = {};
+    beforeAll(async () => {
+        const addProduct = addProductUseCase(dependencies).execute;
+        const addUser = addUserUseCase(dependencies).execute;
+
+        mocks.product = await Promise.all([1, 2, 3].map(() => addProduct({
+            name: chance.name(),
+            description: chance.sentence(),
+            images: [chance.url(), chance.url()],
+            price: chance.natural(),
+            color: chance.color(),
+            meta: {
+                review: chance.sentence()
+            }
+
+        })))
+
+        mocks.users = await Promise.all([1, 2, 3].map(() => addUser({
+            name: chance.name(),
+            lastName: chance.last(),
+            gender: genders.NOT_SPECIFIED,
+            meta: {
+                hair: {
+                    color: chance.color()
+                }
+            }
+        })))
+
+        testOrder = {
+            userId: mocks.users[0].id,
+            productsIds: mocks.product.map(product => product.id),
+            date: chance.date(),
+            isPayed: false,
+            meta: {
+                comment: 'Please delie it to me as soon as possible.'
+            }
+        }
+    })
     describe('Add order use case', () => {
         test('Order should be added', async () => {
 
@@ -68,7 +136,45 @@ describe('Order use cases', () => {
             // Check the call
             const expectedOrder = mockOrdersRepo.add.mock.calls[0][0];
             expect(expectedOrder).toEqual(testOrder);
-        })
+        });
+
+        test('Should return validation error when product id is unknown', async () => {
+            const fakeId = uuidv4();
+            try{
+                // call add order
+                await addOrderUseCase(dependencies).execute({
+                    ...testOrder,
+                    productsIds: [...testOrder.productsIds, fakeId]
+                });
+                expect(true).toBe(false);
+
+            } catch(err) {
+                expect(err.status).toBe(403);
+                expect(err.validationErrors).toEqual([new ValidationError({
+                    field: 'productsIds',
+                    msg: `No products with ids ${fakeId}`
+                })])
+            }
+        });
+
+        test('Should return validation error when user id is unknown', async () => {
+            const fakeId = uuidv4();
+            try{
+                // call add order
+                await addOrderUseCase(dependencies).execute({
+                    ...testOrder,
+                    userId: fakeId
+                });
+                expect(true).toBe(false);
+
+            } catch(err) {
+                expect(err.status).toBe(403);
+                expect(err.validationErrors).toEqual([new ValidationError({
+                    field: 'userId',
+                    msg: `No user with id ${fakeId}`
+                })])
+            }
+        });
     })
 
     describe('Get by Id order use case', () => {
